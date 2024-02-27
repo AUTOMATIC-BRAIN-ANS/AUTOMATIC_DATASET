@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "sonata-dataset"
+version = "0.1.0"
+description = "This package allows you to experiment with our data smoothly"
+authors = ["Mikolaj Najda <276928@student.pwr.edu.pl>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.11"
+matplotlib = "3.5.1"
+numpy = "1.22.3"
+pandas = "1.4.3"
+scipy = "1.8.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
