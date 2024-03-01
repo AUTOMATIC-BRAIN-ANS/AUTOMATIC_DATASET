@@ -2,17 +2,26 @@ import numpy as np
 import pandas as pd
 from scipy.interpolate import interp1d
 
-def fill_missing_values(df: pd.DataFrame) -> pd.DataFrame:
+def fill_missing_values(df: pd.DataFrame, max_length: int = 1000) -> pd.DataFrame:
     """
     Fill missing NA/NaN values in the 'signal' column of the DataFrame by propagating the last valid observation forward.
+    If the 'signal' column has a sequence longer than 'max_length', fill the exceeding part with NaN.
 
     Parameters:
     - df (pd.DataFrame): Input DataFrame containing a 'signal' column with potential NA/NaN values.
+    - max_length (int): Maximum allowed length of uninterrupted 'signal' before filling with NaN.
 
     Returns:
-    - pd.DataFrame: The DataFrame with missing values in the 'signal' column filled.
+    - pd.DataFrame: The DataFrame with missing values in the 'signal' column filled and sequences longer than 'max_length' truncated with NaN.
     """
+    # Fill missing values by propagating the last valid observation forward
     df['signal'] = df['signal'].ffill()
+    
+    # Fill with NaN if the signal sequence is too long
+    df['signal'] = df.groupby((df['signal'].notna() & df['signal'].shift().isna()).cumsum())['signal'].transform(
+        lambda x: x if len(x) <= max_length else x[:max_length].append(pd.Series([np.nan] * (len(x) - max_length)))
+    )
+    
     return df
 
 def calculate_derivative(df: pd.DataFrame) -> np.ndarray:
@@ -155,7 +164,7 @@ def clean_signal(signal: np.ndarray, window_size: int = 9, threshold_multiplier:
                                                      cleaned_signal, method=interpolation_method)
             cleaned_signal[start_index:end_index] = interpolated_values
             interpolated_mask[start_index:end_index] = True
-            nan_mask[start_index:end_index] = True  # Here should be logic to set NaN, currently just setting True for the mask
+            nan_mask[start_index:end_index] = True 
 
     if additional_interpolation_method:
         cleaned_signal = interpolate_mask(interpolated_mask, cleaned_signal, 
