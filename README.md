@@ -1,10 +1,7 @@
-# Title
+# AUTOMATIC DATASET
 
-Description of the project or document.
-
-## Data Access
-
-Details about the data access and the license under which it is provided.
+Source code to preprocessing raw signals of arterial blood pressure (ABP), cerebral blood flow velocity (CBFV) and ECG.
+More details about raw data could be found at Zenodo repository under the link: 
 
 ## Try Out the Code
 
@@ -58,7 +55,8 @@ Once Poetry is installed:
 
 ## Acknowledgement
 
-Acknowledgements and credits.
+Author : Mikołaj Najda (276928@student.pwr.edu.pl)
+Project Investigator: Agnieszka Uryga (agnieszka.uryga@pwr.edu.pl)
 
 ## Funding
 
